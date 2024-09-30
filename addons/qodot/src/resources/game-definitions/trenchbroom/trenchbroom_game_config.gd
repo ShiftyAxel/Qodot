@@ -11,6 +11,7 @@ export(String, DIR, GLOBAL) var trenchbroom_games_folder : String
 
 ## Name of the game in Trenchbroom's game list
 export(String) var game_name := "Qodot"
+export(String, DIR) var texture_path := "res://textures"
 
 ## Icon for Trenchbroom's game list
 export(Texture) var icon : Texture
@@ -52,7 +53,7 @@ var base_text: String = """{
 		"packageformat": { "extension": "pak", "format": "idpak" }
 	},
 	"textures": {
-		"root": "assets/textures",
+		"root": "{texture_path}",
 		"extensions": ["bmp", "exr", "hdr", "jpeg", "jpg", "png", "tga", "webp"],
 		"attribute": "_tb_textures"
 	},
@@ -161,7 +162,8 @@ func build_class_text() -> String:
 		"brush_tags": brush_tags_str,
 		"face_tags": face_tags_str,
 		"surface_attributes": surface_flags_str,
-		"context_attributes": content_flags_str
+		"context_attributes": content_flags_str,
+		"texture_path": texture_path.replace("res://", "")
 	})
 
 ## Matches tag key enum to the String name used in .cfg
