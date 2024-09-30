@@ -35,7 +35,7 @@ var fgd_filenames : Array = []
 
 ## Private default .cfg contents, read more at: https://trenchbroom.github.io/manual/latest/#game_configuration_files 
 var base_text: String = """{
-	version: 3,
+	version: 8,
 	name: "%s",
 	icon: "Icon.png",
 	"fileformats": [
@@ -52,8 +52,8 @@ var base_text: String = """{
 		"packageformat": { "extension": "pak", "format": "idpak" }
 	},
 	"textures": {
-		"package": { "type": "directory", "root": "textures" },
-		"format": { "extensions": ["bmp", "exr", "hdr", "jpeg", "jpg", "png", "tga", "webp"], "format": "image" },
+		"root": "textures",
+		"extensions": ["bmp", "exr", "hdr", "jpeg", "jpg", "png", "tga", "webp"],
 		"attribute": "_tb_textures"
 	},
 	"entities": {
