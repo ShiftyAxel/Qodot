@@ -11,6 +11,7 @@ export(String, DIR, GLOBAL) var trenchbroom_games_folder : String
 
 ## Name of the game in Trenchbroom's game list
 export(String) var game_name := "Qodot"
+export(String, DIR) var texture_path := "res://textures"
 
 ## Icon for Trenchbroom's game list
 export(Texture) var icon : Texture
@@ -35,8 +36,8 @@ var fgd_filenames : Array = []
 
 ## Private default .cfg contents, read more at: https://trenchbroom.github.io/manual/latest/#game_configuration_files 
 var base_text: String = """{
-	version: 3,
-	name: "%s",
+	version: 8,
+	name: "{game_name}",
 	icon: "Icon.png",
 	"fileformats": [
 		{ "format": "Standard", "initialmap": "initial_standard.map" },
@@ -52,29 +53,29 @@ var base_text: String = """{
 		"packageformat": { "extension": "pak", "format": "idpak" }
 	},
 	"textures": {
-		"package": { "type": "directory", "root": "textures" },
-		"format": { "extensions": ["bmp", "exr", "hdr", "jpeg", "jpg", "png", "tga", "webp"], "format": "image" },
+		"root": "{texture_path}",
+		"extensions": ["bmp", "exr", "hdr", "jpeg", "jpg", "png", "tga", "webp"],
 		"attribute": "_tb_textures"
 	},
 	"entities": {
-		"definitions": [ %s ],
+		"definitions": [ {definitions} ],
 		"defaultcolor": "0.6 0.6 0.6 1.0",
 		"modelformats": [ "mdl", "md2", "md3", "bsp", "dkm" ]
 	},
 	"tags": {
 		"brush": [
-			%s
+			{brush_tags}
 		],
 		"brushface": [
-			%s
+			{face_tags}
 		]
 	},
 	"faceattribs": {
 		"surfaceflags": [
-			%s
+			{surface_attributes}
 		],
 		"contentflags": [
-			%s
+			{context_attributes}
 		]
 	}
 }
@@ -155,14 +156,15 @@ func build_class_text() -> String:
 	var surface_flags_str = parse_flags(face_attrib_surface_flags)
 	var content_flags_str = parse_flags(face_attrib_content_flags)
 
-	return base_text % [
-		game_name,
-		fgd_filename_str,
-		brush_tags_str,
-		face_tags_str,
-		surface_flags_str,
-		content_flags_str
-	]
+	return base_text.format({
+		"game_name": game_name,
+		"definitions": fgd_filename_str,
+		"brush_tags": brush_tags_str,
+		"face_tags": face_tags_str,
+		"surface_attributes": surface_flags_str,
+		"context_attributes": content_flags_str,
+		"texture_path": texture_path.replace("res://", "")
+	})
 
 ## Matches tag key enum to the String name used in .cfg
 static func get_match_key(tag_match_type: int) -> String:
