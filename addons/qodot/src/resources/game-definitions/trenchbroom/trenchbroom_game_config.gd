@@ -36,7 +36,7 @@ var fgd_filenames : Array = []
 ## Private default .cfg contents, read more at: https://trenchbroom.github.io/manual/latest/#game_configuration_files 
 var base_text: String = """{
 	version: 8,
-	name: "%s",
+	name: "{game_name}",
 	icon: "Icon.png",
 	"fileformats": [
 		{ "format": "Standard", "initialmap": "initial_standard.map" },
@@ -52,29 +52,29 @@ var base_text: String = """{
 		"packageformat": { "extension": "pak", "format": "idpak" }
 	},
 	"textures": {
-		"root": "textures",
+		"root": "assets/textures",
 		"extensions": ["bmp", "exr", "hdr", "jpeg", "jpg", "png", "tga", "webp"],
 		"attribute": "_tb_textures"
 	},
 	"entities": {
-		"definitions": [ %s ],
+		"definitions": [ {definitions} ],
 		"defaultcolor": "0.6 0.6 0.6 1.0",
 		"modelformats": [ "mdl", "md2", "md3", "bsp", "dkm" ]
 	},
 	"tags": {
 		"brush": [
-			%s
+			{brush_tags}
 		],
 		"brushface": [
-			%s
+			{face_tags}
 		]
 	},
 	"faceattribs": {
 		"surfaceflags": [
-			%s
+			{surface_attributes}
 		],
 		"contentflags": [
-			%s
+			{context_attributes}
 		]
 	}
 }
@@ -155,14 +155,14 @@ func build_class_text() -> String:
 	var surface_flags_str = parse_flags(face_attrib_surface_flags)
 	var content_flags_str = parse_flags(face_attrib_content_flags)
 
-	return base_text % [
-		game_name,
-		fgd_filename_str,
-		brush_tags_str,
-		face_tags_str,
-		surface_flags_str,
-		content_flags_str
-	]
+	return base_text.format({
+		"game_name": game_name,
+		"definitions": fgd_filename_str,
+		"brush_tags": brush_tags_str,
+		"face_tags": face_tags_str,
+		"surface_attributes": surface_flags_str,
+		"context_attributes": content_flags_str
+	})
 
 ## Matches tag key enum to the String name used in .cfg
 static func get_match_key(tag_match_type: int) -> String:
